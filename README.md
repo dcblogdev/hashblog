@@ -9,7 +9,7 @@ This is the source code for the post [Showing your Hashnode blog posts on your L
 Clone the repo locally:
 
 ```bash
-git clone https://github.com/dcblogdev/hashblog.git
+git clone git@github.com:dcblogdev/hashblog.git
 ```
 
 Run composer install
