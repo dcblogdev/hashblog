@@ -5,6 +5,14 @@
 
     <div class="flex flex-col rounded-lg shadow-lg overflow-hidden mb-10">
 
+        @if(!empty($post['coverImage']['url']))
+            <div class="flex-shrink-0">
+                <a href="{{ url($post['slug']) }}" class="block">
+                    <img class="w-full object-cover rounded-t-lg" src="{{ $post['coverImage']['url'] }}" alt="">
+                </a>
+            </div>
+        @endif
+
         <div class="flex-1 bg-indigo-800 p-6 flex flex-col justify-between">
             <div class="flex-1">
                 <p class="text-sm leading-5 font-medium text-primary mb-0">
