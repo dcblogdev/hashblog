@@ -20,10 +20,34 @@ Run composer install
 composer install
 ```
 
-Copy the .env.example file to .env and update the following variables:
+Copy the .env.example file to .env:
+
+```bash
+cp .env.example .env
+```
+
+Generate a Key:
+
+```bash
+php artisan key:generate
+```
+
+Set the Hashnode blog to use:
 
 ```
 HASHNODE_HOST=your_hashnode_username
+```
+
+Install NPM:
+
+```bash
+npm install
+```
+
+Build the assets
+
+```bash
+npm run build
 ```
 
 That's it! launch the app and see the posts.
