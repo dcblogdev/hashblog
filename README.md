@@ -2,7 +2,7 @@
 
 A sample Blog using Hashnode Public APIs.
 
-This is the source code for the post [Showing your Hashnode blog posts on your Laravel blog using Hashnode Public APIs](https://hashnode.com/blog/showing-your-hashnode-blog-posts-on-your-laravel-blog-using-hashnode-public-apis) 
+This is the source code for the post https://hashnode.com/blog/showing-your-hashnode-blog-posts-on-your-laravel-blog-using-hashnode-public-apis
 
 ## Installation
 
