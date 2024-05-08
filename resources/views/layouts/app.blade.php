@@ -27,8 +27,9 @@
 
                     <div class="lg:ml-6 lg:flex">
 
-                        <a href="/" class="ml-8 inline-flex items-center px-1 pt-1 text-sm text-white hover:text-gray-300">Blog</a>
-
+                        @foreach($pages as $page)
+                            <a href="{{ '/page/'.$page->node->slug }}" class="ml-8 inline-flex items-center px-1 pt-1 text-sm text-white hover:text-gray-300">{{ $page->node->title }}</a>
+                        @endforeach
                     </div>
 
                 </div>

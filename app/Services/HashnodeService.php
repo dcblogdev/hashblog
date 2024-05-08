@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use stdClass;
 
 class HashnodeService
 {
@@ -15,7 +16,7 @@ class HashnodeService
         $this->url = config('services.hashnode.url');
     }
 
-    public function getPosts(): array
+    public function getPosts(): StdClass
     {
         if (request()->has('next')) {
             $after = request()->input('next');
@@ -62,7 +63,7 @@ class HashnodeService
             }'
         ]);
 
-        $publication = $response->json()['data']['publication'];
+        $publication = $response->object()->data->publication;
 
         if ($publication === null) {
             abort(400, 'Hashnode host not found');
@@ -71,7 +72,7 @@ class HashnodeService
         return $publication;
     }
 
-    public function getPostsByTag(string $tag): array
+    public function getPostsByTag(string $tag): StdClass
     {
         if (request()->has('next')) {
             $after = request()->input('next');
@@ -111,23 +112,25 @@ class HashnodeService
             }'
         ]);
 
-        $publication = $response->json()['data']['publication'];
+        $posts = $response->object()->data->publication->posts;
 
-        if ($publication === null) {
+        if ($posts === null) {
             abort(400, 'Hashnode host not found');
         }
 
-        return $publication['posts'];
+        return $posts;
     }
 
-    public function getPost(string $slug): array
+    public function getPost(string $slug): StdClass
     {
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
                 post(slug: "' . $slug . '") {
+                  id
                   title
                   slug
+                  canonicalUrl
                   content {
                     html,
                     markdown
@@ -135,6 +138,7 @@ class HashnodeService
                   readTimeInMinutes
                   publishedAt
                   url
+                  responseCount
                   coverImage {
                     url
                   }
@@ -146,13 +150,20 @@ class HashnodeService
                     name
                     username
                     profilePicture
+                  },
+                  ogMetaData {
+                    image,
+                  }
+                  seo {
+                    title,
+                    description
                   }
                 }
               }
             }'
         ]);
 
-        $post = $response->json()['data']['publication']['post'];
+        $post = $response->object()->data->publication->post;
 
         if ($post === null) {
             abort(404);
@@ -161,4 +172,63 @@ class HashnodeService
         return $post;
     }
 
+    public function getPages(): array
+    {
+        $response = Http::post($this->url, [
+            'query' => 'query Publication {
+              publication(host: "' . $this->host . '") {
+                id,
+                title
+                staticPages(first: 10) {
+                  edges {
+                    node {
+                      title
+                      slug
+                    }
+                  }
+                }
+              }
+            }'
+        ]);
+
+        $pages = $response->object()->data->publication->staticPages->edges;
+
+        if ($pages === null) {
+            abort(400, 'Hashnode host not found');
+        }
+
+        return $pages;
+    }
+
+    public function getPage(string $slug): StdClass
+    {
+        $response = Http::post($this->url, [
+            'query' => 'query Publication {
+              publication(host: "' . $this->host . '") {
+                staticPage(slug: "' . $slug . '") {
+                  id,
+                  title
+                  content {
+                    html,
+                    markdown
+                  },
+                  ogMetaData {
+                    image,
+                  }
+                  seo {
+                    description
+                  }
+                }
+              }
+            }'
+        ]);
+
+        $page = $response->object()->data->publication->staticPage;
+
+        if ($page === null) {
+            abort(404);
+        }
+
+        return $page;
+    }
 }

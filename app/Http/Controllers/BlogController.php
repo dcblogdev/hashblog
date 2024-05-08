@@ -12,10 +12,12 @@ class BlogController extends Controller
 
     public function index()
     {
+        $posts = $this->hashnodeService->getPosts();
+
         return view('blog.index', [
-            'followers' => $this->hashnodeService->getPosts()['author']['followersCount'],
-            'posts' => $this->hashnodeService->getPosts()['posts']['edges'],
-            'pageInfo' => $this->hashnodeService->getPosts()['posts']['pageInfo'],
+            'followers' => $posts->author->followersCount,
+            'posts' => $posts->posts->edges,
+            'pageInfo' => $posts->posts->pageInfo,
         ]);
     }
 
@@ -23,8 +25,8 @@ class BlogController extends Controller
     {
         return view('blog.tag', [
             'tag' => $tag,
-            'posts' => $this->hashnodeService->getPostsByTag($tag)['edges'],
-            'pageInfo' => $this->hashnodeService->getPosts()['posts']['pageInfo'],
+            'posts' => $this->hashnodeService->getPostsByTag($tag)->edges,
+            'pageInfo' => $this->hashnodeService->getPosts()->posts->pageInfo,
         ]);
     }
 
