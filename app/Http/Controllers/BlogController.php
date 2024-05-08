@@ -6,27 +6,31 @@ use App\Services\HashnodeService;
 
 class BlogController extends Controller
 {
-    public function index(HashnodeService $hashnodeService)
+    public function __construct(
+        readonly HashnodeService $hashnodeService
+    ) {}
+    public function index()
     {
         return view('blog.index', [
-            'posts' => $hashnodeService->getPosts()['edges'],
-            'pageInfo' => $hashnodeService->getPosts()['pageInfo'],
+            'followers' => $this->hashnodeService->getPosts()['author']['followersCount'],
+            'posts' => $this->hashnodeService->getPosts()['posts']['edges'],
+            'pageInfo' => $this->hashnodeService->getPosts()['posts']['pageInfo'],
         ]);
     }
 
-    public function tag(HashnodeService $hashnodeService, string $tag)
+    public function tag(string $tag)
     {
         return view('blog.tag', [
             'tag' => $tag,
-            'posts' => $hashnodeService->getPostsByTag($tag)['edges'],
-            'pageInfo' => $hashnodeService->getPosts()['pageInfo'],
+            'posts' => $this->hashnodeService->getPostsByTag($tag)['edges'],
+            'pageInfo' => $this->hashnodeService->getPosts()['posts']['pageInfo'],
         ]);
     }
 
-    public function show(HashnodeService $hashnodeService, string $slug)
+    public function show(string $slug)
     {
         return view('blog.show', [
-            'post' => $hashnodeService->getPost($slug),
+            'post' => $this->hashnodeService->getPost($slug),
         ]);
     }
 }
