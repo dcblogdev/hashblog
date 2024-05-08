@@ -20,6 +20,9 @@ class HashnodeService
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
+                author {
+                  followersCount
+                }
                 posts(first: 10) {
                   edges {
                     node {
@@ -30,10 +33,10 @@ class HashnodeService
                       publishedAt
                       views
                       url
-                      coverImage {                
+                      coverImage {
                         url
                       }
-                      tags {                
+                      tags {
                         name
                         slug
                       }
@@ -59,7 +62,7 @@ class HashnodeService
             abort(400, 'Hashnode host not found');
         }
 
-        return $publication['posts'];
+        return $publication;
     }
 
     public function getPostsByTag(string $tag): array
@@ -67,7 +70,7 @@ class HashnodeService
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
-                posts(first: 10, filter: { tagSlugs: ["'.$tag.'"] }) {
+                posts(first: 10, filter: { tagSlugs: ["' . $tag . '"] }) {
                   edges {
                     node {
                       title
@@ -77,10 +80,10 @@ class HashnodeService
                       publishedAt
                       views
                       url
-                      coverImage {                
+                      coverImage {
                         url
                       }
-                      tags {                
+                      tags {
                         name
                         slug
                       }
@@ -110,20 +113,20 @@ class HashnodeService
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
-                post(slug: "'.$slug.'") {
+                post(slug: "' . $slug . '") {
                   title
                   slug
                   content {
                     html,
-                    markdown                                    
+                    markdown
                   }
                   readTimeInMinutes
                   publishedAt
                   url
-                  coverImage {                
+                  coverImage {
                     url
                   }
-                  tags {                
+                  tags {
                     name
                     slug
                   }
