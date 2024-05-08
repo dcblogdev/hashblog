@@ -61,6 +61,6 @@
 
 @if($pageInfo['hasNextPage'])
     <div class="flex justify-center">
-        <a class="bg-indigo-600 text-white px-2 py-2.5 mb-10 rounded-md" href="{{ url('?next='.$pageInfo['endCursor']) }}">Next Page</a>
+        <a class="bg-indigo-600 text-white px-2 py-2.5 mb-10 rounded-md" href="{{ url()->current().'?next='.$pageInfo['endCursor'] }}">Next Page</a>
     </div>
 @endif

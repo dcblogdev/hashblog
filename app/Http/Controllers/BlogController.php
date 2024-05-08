@@ -9,6 +9,7 @@ class BlogController extends Controller
     public function __construct(
         readonly HashnodeService $hashnodeService
     ) {}
+
     public function index()
     {
         return view('blog.index', [

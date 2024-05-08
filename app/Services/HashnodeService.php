@@ -17,13 +17,19 @@ class HashnodeService
 
     public function getPosts(): array
     {
+        if (request()->has('next')) {
+            $after = request()->input('next');
+        } else {
+            $after = '';
+        }
+
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
                 author {
                   followersCount
                 }
-                posts(first: 10) {
+                posts(first: 9, after: "' . $after . '") {
                   edges {
                     node {
                       title
@@ -67,10 +73,16 @@ class HashnodeService
 
     public function getPostsByTag(string $tag): array
     {
+        if (request()->has('next')) {
+            $after = request()->input('next');
+        } else {
+            $after = '';
+        }
+
         $response = Http::post($this->url, [
             'query' => 'query Publication {
               publication(host: "' . $this->host . '") {
-                posts(first: 10, filter: { tagSlugs: ["' . $tag . '"] }) {
+                posts(first: 9, after: "' . $after . '", filter: { tagSlugs: ["' . $tag . '"] }) {
                   edges {
                     node {
                       title
