@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\HashnodeService;
 use Illuminate\Support\ServiceProvider;
+use App\Services\HashnodeService;
 use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
